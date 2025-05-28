@@ -15,8 +15,8 @@ export default function Header() {
           <span className="font-semibold text-black">Hotline:</span>
           <span className="ml-1 font-semibold text-orange-500">0987 013 286</span>
         </span>
-        <span className="hidden text-sm text-orange-800 sm:inline">
-          GIA BẢO FORKLIFT - Chuyên cung cấp xe nâng hàng chất lượng cao
+        <span className="hidden text-sm text-purple-500 sm:inline">
+          GIA BẢO FORKLIFT - Chuyên cung cấp xe nâng hàng chất lượng cao!
         </span>
         <form className="relative">
           <input
