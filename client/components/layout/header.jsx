@@ -47,7 +47,7 @@ export default function Header() {
 
         {/* Desktop Menu */}
         <nav className="hidden space-x-6 text-sm font-medium sm:flex">
-          <a href="#" className="hover:text-orange-500">Trang chủ</a>
+          <a href="/" className="hover:text-orange-500">Trang chủ</a>
           <a href="#" className="hover:text-orange-500">Giới thiệu</a>
           <a href="#" className="hover:text-orange-500">Sản phẩm</a>
           <a href="#" className="hover:text-orange-500">Phụ tùng</a>
@@ -59,7 +59,7 @@ export default function Header() {
         {/* Desktop Register Button */}
         <div className="hidden sm:block">
           <button className="px-4 py-2 text-sm text-orange-500 border border-orange-500 rounded hover:cursor-pointer hover:bg-orange-50">
-            Đăng ký
+            Đăng nhập
           </button>
         </div>
 
@@ -134,15 +134,15 @@ export default function Header() {
             </button>
 
             {/* Menu Items */}
-            <a href="#" className="block py-2 mt-4 text-base hover:text-orange-500">Trang chủ</a>
+            <a href="/" className="block py-2 mt-4 text-base hover:text-orange-500">Trang chủ</a>
             <a href="#" className="block py-2 text-base hover:text-orange-500">Giới thiệu</a>
             <a href="#" className="block py-2 text-base hover:text-orange-500">Sản phẩm</a>
             <a href="#" className="block py-2 text-base hover:text-orange-500">Phụ tùng</a>
             <a href="#" className="block py-2 text-base hover:text-orange-500">Dịch vụ</a>
             <a href="#" className="block py-2 text-base hover:text-orange-500">Tin tức</a>
             <a href="#" className="block py-2 text-base hover:text-orange-500">Liên hệ</a>
-            <button className="w-full px-4 py-2 mt-4 text-sm text-orange-500 border border-orange-500 rounded hover:bg-orange-50">
-              Đăng ký
+            <button className="w-full px-4 py-2 mt-4 text-sm text-orange-500 border border-orange-500 rounded hover:cursor-pointer hover:bg-orange-50">
+              Đăng nhập
             </button>
           </nav>
         </>

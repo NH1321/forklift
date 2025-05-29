@@ -7,7 +7,7 @@ export default function Footer() {
     <footer className="text-gray-800 bg-white shadow-inner">
       <div className="grid items-center grid-cols-1 gap-6 px-4 py-4 mx-auto border-t border-purple-500 max-w-7xl sm:grid-cols-2 md:grid-cols-4">
         {/* Logo và tên thương hiệu */}
-        <div className="space-y-1">
+        <div className="flex flex-col items-center space-y-1 text-center">
           <h2 className="text-lg font-bold tracking-widest">
             <a
               href="/"
@@ -27,29 +27,23 @@ export default function Footer() {
         </div>
 
         {/* Thông tin liên hệ */}
-        <div className="flex flex-col space-y-1">
-          <span>
-            <span className="text-gray-500">Hotline: </span>
-            <a
-              href="tel:0987013286"
-              className="text-lg font-bold transition-colors hover:text-orange-500"
-            >
-              0987 013 286
-            </a>
-          </span>
-          <span>
-            <span className="text-gray-500">Email: </span>
-            <a
+        <div className="flex flex-col items-center space-y-1 text-center">
+          <a
+            href="tel:0987013286"
+            className="text-lg font-bold transition-colors hover:text-orange-500"
+          >
+            0987 013 286
+          </a>
+          <a
             href="mailto:Giabaoforklift@gmail.com"
             className="text-sm text-gray-500 transition-colors hover:text-orange-500"
           >
             Giabaoforklift@gmail.com
           </a>
-          </span>
         </div>
 
         {/* Giới thiệu ngắn */}
-        <div className="flex flex-col space-y-3 text-sm text-gray-500">
+        <div className="flex flex-col items-center space-y-3 text-sm text-center text-gray-500">
           <a
             href="/chinh-sach-ban-hang"
             className="transition-colors hover:text-orange-500"
@@ -65,7 +59,7 @@ export default function Footer() {
         </div>
 
         {/* Mạng xã hội */}
-        <div className="space-y-2">
+        <div className="flex flex-col items-center space-y-2 text-center">
           <p className="text-sm text-gray-500">Kết nối với chúng tôi</p>
           <div className="flex items-center space-x-4 text-xl">
             <a
