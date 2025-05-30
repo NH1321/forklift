@@ -1,11 +1,57 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import LoginPopup from '../ui/LoginPopup';
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [showMobileSearch, setShowMobileSearch] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
+  const [user, setUser] = useState(null);
+  const [showUserMenu, setShowUserMenu] = useState(false);
+  const [showMobileUserMenu, setShowMobileUserMenu] = useState(false);
+  const userMenuRef = useRef();
+
+  // Load user info from localStorage on mount
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const userData = localStorage.getItem("user");
+      if (userData) setUser(JSON.parse(userData));
+    }
+  }, []);
+
+  // Đóng user menu khi click ra ngoài
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target)) {
+        setShowUserMenu(false);
+      }
+    }
+    if (showUserMenu) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [showUserMenu]);
+
+  // Đăng xuất
+  const handleLogout = async () => {
+    try {
+      await fetch('http://localhost:5000/api/auth/logout', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+    } catch (error) {
+      console.error("Đăng xuất thất bại: ", error);
+    }
+    localStorage.removeItem("user");
+    localStorage.removeItem("accessToken");
+    setUser(null);
+    setShowUserMenu(false);
+  };
 
   return (
     <header className="relative z-50 w-full bg-white shadow-md px-4 sm:px-10 lg:px-[180px]">
@@ -58,11 +104,58 @@ export default function Header() {
 
         {/* Desktop Register Button */}
         <div className="hidden sm:block">
-          <button className="px-4 py-2 text-sm text-orange-500 border border-orange-500 rounded hover:cursor-pointer hover:bg-orange-50">
-            Đăng nhập
-          </button>
+          {user ? (
+            <div className="relative" ref={userMenuRef}>
+              <div
+                className="flex items-center px-4 py-2 text-sm font-medium hover:cursor-pointer"
+                onClick={() => setShowUserMenu((v) => !v)}
+              >
+                <Image
+                  src="/avatar.jpg"
+                  alt="avatar"
+                  width={28}
+                  height={28}
+                  className="mr-2 rounded-full"
+                />
+                <span>{user.name || user.email}</span>
+                <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
+              {showUserMenu && (
+                <div className="absolute right-0 z-50 w-48 mt-2 bg-white border border-gray-200 rounded shadow">
+                  <button
+                    className="block w-full px-4 py-2 text-sm text-left hover:cursor-pointer hover:text-orange-500 hover:bg-gray-100"
+                    onClick={() => { setShowUserMenu(false); /* Xử lý đổi mật khẩu ở đây */ }}
+                  >
+                    Đổi mật khẩu
+                  </button>
+                  <button
+                    className="block w-full px-4 py-2 text-sm text-left hover:cursor-pointer hover:text-orange-500 hover:bg-gray-100"
+                    onClick={handleLogout}
+                  >
+                    Đăng xuất
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <button
+              className="px-4 py-2 text-sm text-orange-500 border border-orange-500 rounded hover:cursor-pointer hover:bg-orange-50"
+              onClick={() => setShowLogin(true)}
+            >
+              Đăng nhập
+            </button>
+          )}
         </div>
-
+        <LoginPopup
+          open={showLogin}
+          onClose={() => setShowLogin(false)}
+          onLoginSuccess={(user) => {
+            setUser(user);
+            setShowLogin(false);
+          }}
+        />
         {/* Mobile Search & Menu Toggle */}
         <div className="relative flex items-center space-x-2 sm:hidden">
           {/* Search Icon */}
@@ -134,16 +227,73 @@ export default function Header() {
             </button>
 
             {/* Menu Items */}
-            <a href="/" className="block py-2 mt-4 text-base hover:text-orange-500">Trang chủ</a>
-            <a href="#" className="block py-2 text-base hover:text-orange-500">Giới thiệu</a>
-            <a href="#" className="block py-2 text-base hover:text-orange-500">Sản phẩm</a>
-            <a href="#" className="block py-2 text-base hover:text-orange-500">Phụ tùng</a>
-            <a href="#" className="block py-2 text-base hover:text-orange-500">Dịch vụ</a>
-            <a href="#" className="block py-2 text-base hover:text-orange-500">Tin tức</a>
-            <a href="#" className="block py-2 text-base hover:text-orange-500">Liên hệ</a>
-            <button className="w-full px-4 py-2 mt-4 text-sm text-orange-500 border border-orange-500 rounded hover:cursor-pointer hover:bg-orange-50">
-              Đăng nhập
-            </button>
+            <a href="/" className="block py-2 mt-4 text-base hover:text-orange-500" onClick={() => setMenuOpen(false)}>Trang chủ</a>
+            <a href="#" className="block py-2 text-base hover:text-orange-500" onClick={() => setMenuOpen(false)}>Giới thiệu</a>
+            <a href="#" className="block py-2 text-base hover:text-orange-500" onClick={() => setMenuOpen(false)}>Sản phẩm</a>
+            <a href="#" className="block py-2 text-base hover:text-orange-500" onClick={() => setMenuOpen(false)}>Phụ tùng</a>
+            <a href="#" className="block py-2 text-base hover:text-orange-500" onClick={() => setMenuOpen(false)}>Dịch vụ</a>
+            <a href="#" className="block py-2 text-base hover:text-orange-500" onClick={() => setMenuOpen(false)}>Tin tức</a>
+            <a href="#" className="block py-2 text-base hover:text-orange-500" onClick={() => setMenuOpen(false)}>Liên hệ</a>
+            {/* Đặt LoginPopup ở đây để không bị che */}
+            <LoginPopup open={showLogin} onClose={() => setShowLogin(false)} onLoginSuccess={(user) => { setUser(user); setShowLogin(false); }} />
+
+            {/* User info dưới cùng */}
+            <div className="">
+              {user ? (
+                <div className='absolute bottom-0 left-0 w-full'>
+                  <div className="relative w-full">
+                    <button
+                      className="flex items-center w-full px-4 py-2 space-x-2 rounded-t hover:cursor-pointer bg-gray-50 hover:bg-gray-100"
+                      onClick={() => setShowMobileUserMenu((v) => !v)}
+                    >
+                      <Image
+                        src="/avatar.jpg"
+                        alt="avatar"
+                        width={32}
+                        height={32}
+                        className="rounded-full"
+                      />
+                      <span className="font-semibold">{user.name || user.email}</span>
+                      <svg className="w-5 h-5 ml-auto text-gray-300 hover:text-orange-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M19 15l-7-7-7 7" />
+                      </svg>
+                    </button>
+                    {showMobileUserMenu && (
+                      <div className="absolute left-1/2 bottom-12 z-50 w-[90%] -translate-x-1/2 bg-white border border-gray-200 rounded shadow">
+                        <button
+                          className="block w-full px-4 py-2 text-sm text-left hover:text-orange-500 hover:cursor-pointer hover:bg-gray-100"
+                          onClick={() => {
+                            setShowMobileUserMenu(false);
+                            // Xử lý đổi mật khẩu ở đây
+                          }}
+                        >
+                          Đổi mật khẩu
+                        </button>
+                        <button
+                          className="block w-full px-4 py-2 text-sm text-left hover:text-orange-500 hover:cursor-pointer hover:bg-gray-100"
+                          onClick={() => {
+                            setShowMobileUserMenu(false);
+                            setMenuOpen(false);
+                            handleLogout();
+                          }}
+                        >
+                          Đăng xuất
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>   
+              ) : (
+                <button className="w-full px-4 py-2 mt-4 text-sm text-orange-500 border border-orange-500 rounded hover:cursor-pointer hover:bg-orange-50"
+                  onClick={() => {
+                      setMenuOpen(false);
+                      setShowLogin(true);
+                    }}
+                  >
+                    Đăng nhập
+                </button>
+              )}
+            </div>
           </nav>
         </>
       )}

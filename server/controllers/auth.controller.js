@@ -55,7 +55,12 @@ exports.login = async (req, res) => {
             maxAge: 4 * 60 * 60 * 1000
         });
 
-        return res.status(200).json({ message: 'Login successful', accessToken });
+        return res.status(200).json({ message: 'Login successful', accessToken, user: {
+                id: user.UserId,
+                email: user.Email,
+                name: user.FullName,
+                role: user.RoleId
+            } });
     } catch (error) {
         return res.status(500).json({ message: 'Error logging in', error });
     }
