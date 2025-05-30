@@ -21,6 +21,10 @@ const generateTokens = (user) => {
 exports.register = async (req, res) => {
     const { Email, Password, FullName, RoleId } = req.body;
     try {
+        const existingUser = await User.findOne({ where: { Email } });
+        if (existingUser) {
+            return res.status(400).json({ message: 'Email đã tồn tại.' });
+        }
         const hashedPassword = await bcrypt.hash(Password, 10);
         await User.create({
             Email: Email,
@@ -30,9 +34,9 @@ exports.register = async (req, res) => {
             CreatedAt: new Date()
         });
         
-        return res.status(201).json({ message: 'User registered successfully', user: { Email, FullName, RoleId } });
+        return res.status(201).json({ message: 'Người dùng đã đăng ký thành công', user: { Email, FullName, RoleId } });
     } catch (error) {
-        return res.status(500).json({ message: 'Error registering user', error });
+        return res.status(500).json({ message: 'Không thể kết nối tới máy chủ.', error });
     }
 }
 

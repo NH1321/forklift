@@ -1,17 +1,20 @@
 'use client';
+
 import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { callApi } from "../../api/api";
+import RegisterPopup from "./RegisterPopup";
 
 export default function LoginPopup({ open, onClose, onLoginSuccess }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showRegister, setShowRegister] = useState(false);
   const router = useRouter();
 
-  if (!open) return null;
+  if (!open && !showRegister) return null;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,20 +32,29 @@ export default function LoginPopup({ open, onClose, onLoginSuccess }) {
       if (onLoginSuccess) onLoginSuccess(data.user);
       router.push("/");
     } catch (err) {
-      if (err && err.message) {
-        setError(err.message);
-      } else {
-        setError("Có lỗi xảy ra. Vui lòng thử lại sau.");
-      }
+      setError(err?.message || "Có lỗi xảy ra. Vui lòng thử lại sau.");
       setLoading(false);
     }
   };
 
+  // Hiển thị RegisterPopup nếu showRegister = true
+  if (showRegister) {
+    return (
+      <RegisterPopup
+        open={showRegister}
+        onClose={() => { setShowRegister(false); onClose && onClose(); }}
+        onBackToLogin={() => setShowRegister(false)}
+        onRegisterSuccess={() => {
+          setShowRegister(false); // Đóng popup đăng ký
+          setShowLogin(true);     // Mở lại popup đăng nhập (nếu bạn có state showLogin)
+        }}
+      />
+    );
+  }
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-      {/* Popup content */}
       <div className="relative w-full max-w-xs p-6 mx-2 bg-white shadow-lg sm:max-w-md rounded-xl sm:p-8">
-        {/* Close button */}
         <button
           className="absolute text-4xl text-gray-400 hover:cursor-pointer top-3 right-3 hover:text-orange-500"
           onClick={onClose}
@@ -50,12 +62,10 @@ export default function LoginPopup({ open, onClose, onLoginSuccess }) {
         >
           ×
         </button>
-        {/* Logo */}
         <div className="flex flex-col items-center mb-4">
           <Image src="/logo.png" alt="Logo" width={48} height={48} className="mb-2" />
           <span className="text-xl font-bold text-gray-700">Đăng nhập</span>
         </div>
-        {/* Form */}
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
           <input
             type="email"
@@ -87,7 +97,6 @@ export default function LoginPopup({ open, onClose, onLoginSuccess }) {
             {loading ? "Đang đăng nhập..." : "Đăng nhập"}
           </button>
         </form>
-        {/* Actions */}
         <div className="flex flex-col items-center gap-2 mt-4">
           <button className="text-sm text-orange-400 hover:text-orange-500 hover:cursor-pointer">Quên mật khẩu?</button>
           <div className="flex items-center w-full my-2">
@@ -107,7 +116,12 @@ export default function LoginPopup({ open, onClose, onLoginSuccess }) {
           </button>
           <div className="flex items-center gap-1 mt-2 text-sm">
             <span>Bạn chưa có tài khoản?</span>
-            <button className="text-orange-500 hover:underline hover:cursor-pointer">Đăng ký</button>
+            <button
+              className="text-orange-500 hover:underline hover:cursor-pointer"
+              onClick={() => setShowRegister(true)}
+            >
+              Đăng ký
+            </button>
           </div>
         </div>
       </div>
