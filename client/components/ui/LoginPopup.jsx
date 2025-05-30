@@ -2,6 +2,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { callApi } from "../../api/api";
 
 export default function LoginPopup({ open, onClose, onLoginSuccess }) {
   const [email, setEmail] = useState("");
@@ -17,26 +18,22 @@ export default function LoginPopup({ open, onClose, onLoginSuccess }) {
     setError("");
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:5000/api/auth/login", {
+      const data = await callApi("/api/auth/login", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: 'include',
-        body: JSON.stringify({ Email: email, Password: password }),
+        body: { Email: email, Password: password },
       });
-      const data = await res.json();
-      if (res.ok) {
-        localStorage.setItem('accessToken', data.accessToken);
-        localStorage.setItem('user', JSON.stringify(data.user));
-        setLoading(false);
-        onClose();
-        if (onLoginSuccess) onLoginSuccess(data.user);
-        router.push("/");
-      } else {
-        setError("Đăng nhập thất bại. Vui lòng thử lại.");
-        setLoading(false);
-      }
+      localStorage.setItem('accessToken', data.accessToken);
+      localStorage.setItem('user', JSON.stringify(data.user));
+      setLoading(false);
+      onClose();
+      if (onLoginSuccess) onLoginSuccess(data.user);
+      router.push("/");
     } catch (err) {
-      setError("Không thể kết nối tới máy chủ.");
+      if (err && err.message) {
+        setError(err.message);
+      } else {
+        setError("Có lỗi xảy ra. Vui lòng thử lại sau.");
+      }
       setLoading(false);
     }
   };

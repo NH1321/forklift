@@ -41,11 +41,11 @@ exports.login = async (req, res) => {
     try {
         const user = await User.findOne({ where: { Email } });
         if (!user) {
-            return res.status(404).json({ message: 'User not found' });
+            return res.status(404).json({ message: 'Không tìm thấy người dùng' });
         }
         const isMatch = await bcrypt.compare(Password, user.Password);
         if (!isMatch) {
-            return res.status(401).json({ message: 'Invalid credentials' });
+            return res.status(401).json({ message: 'Thông tin đăng nhập không hợp lệ' });
         }
         const { accessToken, refreshToken} = generateTokens(user);
         res.cookie('refreshToken', refreshToken, {
@@ -62,7 +62,7 @@ exports.login = async (req, res) => {
                 role: user.RoleId
             } });
     } catch (error) {
-        return res.status(500).json({ message: 'Error logging in', error });
+        return res.status(500).json({ message: 'Không thể kết nối tới máy chủ.', error });
     }
 }
 

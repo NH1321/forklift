@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import LoginPopup from '../ui/LoginPopup';
+import { callApi } from "../../api/api"; 
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -37,13 +38,7 @@ export default function Header() {
   // Đăng xuất
   const handleLogout = async () => {
     try {
-      await fetch('http://localhost:5000/api/auth/logout', {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      await callApi('/api/auth/logout', { method: 'POST' });
     } catch (error) {
       console.error("Đăng xuất thất bại: ", error);
     }
