@@ -16,6 +16,7 @@ export default function FloatingContactButtons() {
         href="tel:0987013286"
         className="flex items-center justify-center w-10 h-10 transition-transform bg-orange-500 rounded-full shadow-lg sm:w-12 sm:h-12 hover:scale-110"
         aria-label="Gọi Hotline"
+        title="Điện thoại: 0987013286"
       >
         <svg
           width="20"
@@ -40,6 +41,7 @@ export default function FloatingContactButtons() {
         rel="noopener noreferrer"
         className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-[#0084FF] rounded-full shadow-lg hover:scale-110 transition-transform"
         aria-label="Chat Zalo"
+        title="Zalo: 0987013286"
       >
         <Image
           src="/logo_zalo.png"
@@ -56,6 +58,7 @@ export default function FloatingContactButtons() {
         rel="noopener noreferrer"
         className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-[#ff5af2] via-[#5a8cff] to-[#00eaff] rounded-full shadow-lg hover:scale-110 transition-transform"
         aria-label="Chat Messenger"
+        title="Messenger: Hoàng Hải Forklift XN"
       >
         <svg
           width="20"
@@ -73,6 +76,7 @@ export default function FloatingContactButtons() {
         onClick={handleScrollTop}
         className="flex items-center justify-center w-10 h-10 transition-transform bg-indigo-500 rounded-full shadow-lg sm:w-12 sm:h-12 hover:scale-110 hover:cursor-pointer"
         aria-label="Lên đầu trang"
+        title="Lên đầu trang"
       >
         <svg
           width="20"
