@@ -95,7 +95,7 @@ exports.refreshToken = async (req, res) => {
         return res.status(403).json({ message: "Forbidden" });
       }
       const newAccessToken = jwt.sign(
-        { id: user.UserId, role: user.RoleId },
+        { id: user.id, role: user.role },
         process.env.ACCESS_TOKEN_SECRET,
         { expiresIn: "10m" }
       );
@@ -145,16 +145,8 @@ exports.changePassword = async (req, res) => {
 exports.googleCallback = (req, res) => {
   const jwt = require("jsonwebtoken");
   const user = req.user;
-  const accessToken = jwt.sign(
-    { id: user.UserId, role: user.RoleId },
-    process.env.ACCESS_TOKEN_SECRET,
-    { expiresIn: "10m" }
-  );
-  const refreshToken = jwt.sign(
-    { id: user.UserId, role: user.RoleId },
-    process.env.REFRESH_TOKEN_SECRET,
-    { expiresIn: "4h" }
-  );
+
+  const { accessToken, refreshToken } = generateTokens(user);
   // Lưu refreshToken vào HTTP-only cookie
   res.cookie("refreshToken", refreshToken, {
     httpOnly: true,

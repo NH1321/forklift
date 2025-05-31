@@ -18,14 +18,13 @@ export async function fetchWithAuth(url, options = {}) {
     const refreshData = await refreshRes.json();
     if (refreshRes.ok && refreshData.accessToken) {
       localStorage.setItem('accessToken', refreshData.accessToken);
-      // Gửi lại request gốc với token mới
       const retryHeaders = {
         ...headers,
         Authorization: `Bearer ${refreshData.accessToken}`,
       };
-      res = await fetch(url, { ...opts, headers: retryHeaders });
+      const retryOpts = { ...opts, headers: retryHeaders };
+      res = await fetch(url, retryOpts);
     } else {
-      // Nếu refresh token cũng hết hạn, trả về response lỗi
       throw refreshData;
     }
   }

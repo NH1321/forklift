@@ -11,6 +11,7 @@ exports.getMe = async (req, res) => {
   const token = authHeader.split(" ")[1];
   try {
     const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+    console.log("Decoded token:", decoded);
     const user = await db.User.findByPk(decoded.id, {
       attributes: ["FullName", "RoleId"],
     });
