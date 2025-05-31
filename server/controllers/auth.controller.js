@@ -59,11 +59,9 @@ exports.login = async (req, res) => {
             maxAge: 4 * 60 * 60 * 1000
         });
 
-        return res.status(200).json({ message: 'Login successful', accessToken, user: {
-                id: user.UserId,
-                email: user.Email,
-                name: user.FullName,
-                role: user.RoleId
+        return res.status(200).json({ message: 'Đăng nhập thành công', accessToken, user: {
+                FullName: user.FullName,
+                RoleId: user.RoleId
             } });
     } catch (error) {
         return res.status(500).json({ message: 'Không thể kết nối tới máy chủ.', error });
@@ -103,19 +101,43 @@ exports.changePassword = async (req, res) => {
         const user = await User.findOne({ where: { Email } });
 
         if (!user) {
-            return res.status(404).json({ message: 'User not found' });
+            return res.status(404).json({ message: 'Không tìm thấy người dùng' });
         }
         
         const isMatch = await bcrypt.compare(OldPassword, user.Password);
         if (!isMatch) {
-            return res.status(401).json({ message: 'Invalid credentials' });
+            return res.status(401).json({ message: 'Thông tin đăng nhập không hợp lệ' });
         }
        
         const hashedPassword = await bcrypt.hash(NewPassword, 10);
         await user.update({ Password: hashedPassword });
    
-        return res.status(200).json({ message: 'Password changed successfully' });
+        return res.status(200).json({ message: 'Mật khẩu đã được thay đổi thành công' });
     } catch (error) {
-        return res.status(500).json({ message: 'Error changing password', error });
+        return res.status(500).json({ message: 'Không thể kết nối tới máy chủ.', error });
     }
 }
+
+exports.googleCallback = (req, res) => {
+    const jwt = require('jsonwebtoken');
+    const user = req.user;
+    const accessToken = jwt.sign(
+      { id: user.UserId, role: user.RoleId },
+      process.env.ACCESS_TOKEN_SECRET,
+      { expiresIn: '10m' }
+    );
+    const refreshToken = jwt.sign(
+      { id: user.UserId, role: user.RoleId },
+      process.env.REFRESH_TOKEN_SECRET,
+      { expiresIn: '4h' }
+    );
+    // Lưu refreshToken vào HTTP-only cookie
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      secure: false,
+      sameSite: 'Strict',
+      maxAge: 4 * 60 * 60 * 1000 // 4 giờ
+    });
+    // Redirect về FE chỉ kèm accessToken
+    res.redirect(`${process.env.CLIENT_URL}/oauth-success?token=${accessToken}`);
+  };

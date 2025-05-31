@@ -97,7 +97,7 @@ export default function Footer() {
       <div className="w-full px-4 py-3 bg-gray-100 border-t border-gray-200">
         <div className="flex flex-col items-center justify-center text-xs font-semibold text-gray-500 sm:flex-row sm:justify-center">
           <span>
-            © {new Date().getFullYear()} GIA BẢO FORKLIFT. All rights reserved.
+            © {new Date().getFullYear()} GIA BẢO FORKLIFT. All rights reserved - Design by NamBT
           </span>
         </div>
       </div>

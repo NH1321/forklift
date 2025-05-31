@@ -3,7 +3,9 @@ import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import LoginPopup from '../ui/LoginPopup';
-import { callApi } from "../../api/api"; 
+import ChangePasswordPopup from '../ui/ChangePasswordPopup';
+import { callApi } from "../../api/api";
+import { fetchWithAuth } from "../../utils/fetchWithAuth";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -12,14 +14,22 @@ export default function Header() {
   const [user, setUser] = useState(null);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showMobileUserMenu, setShowMobileUserMenu] = useState(false);
+  const [showChangePassword, setShowChangePassword] = useState(false); // State cho popup đổi mật khẩu
   const userMenuRef = useRef();
 
-  // Load user info from localStorage on mount
+  // Lấy user info từ accessToken (ưu tiên accessToken, fallback localStorage)
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const userData = localStorage.getItem("user");
-      if (userData) setUser(JSON.parse(userData));
-    }
+    const fetchUser = async () => {
+      try {
+        const res = await fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/user/me`);
+        const data = await res.json();
+        setUser(data);
+      } catch (err) {
+        setUser(null);
+        localStorage.removeItem("accessToken");
+      }
+    };
+    fetchUser();
   }, []);
 
   // Đóng user menu khi click ra ngoài
@@ -112,7 +122,7 @@ export default function Header() {
                   height={28}
                   className="mr-2 rounded-full"
                 />
-                <span>{user.name || user.email}</span>
+                <span>{user.FullName}</span>
                 <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
                 </svg>
@@ -121,7 +131,7 @@ export default function Header() {
                 <div className="absolute right-0 z-50 w-48 mt-2 bg-white border border-gray-200 rounded shadow">
                   <button
                     className="block w-full px-4 py-2 text-sm text-left hover:cursor-pointer hover:text-orange-500 hover:bg-gray-100"
-                    onClick={() => { setShowUserMenu(false); /* Xử lý đổi mật khẩu ở đây */ }}
+                    onClick={() => setShowChangePassword(true)} // Mở popup đổi mật khẩu
                   >
                     Đổi mật khẩu
                   </button>
@@ -149,6 +159,16 @@ export default function Header() {
           onLoginSuccess={(user) => {
             setUser(user);
             setShowLogin(false);
+          }}
+        />
+        <ChangePasswordPopup
+          open={showChangePassword}
+          onClose={() => setShowChangePassword(false)}
+          onSuccess={() => {
+            setUser(null);
+            setShowUserMenu(false);
+            setShowChangePassword(false);
+            // Đã điều hướng về trang đăng nhập ở trong popup
           }}
         />
         {/* Mobile Search & Menu Toggle */}
@@ -248,7 +268,7 @@ export default function Header() {
                         height={32}
                         className="rounded-full"
                       />
-                      <span className="font-semibold">{user.name || user.email}</span>
+                      <span>{user.FullName}</span>
                       <svg className="w-5 h-5 ml-auto text-gray-300 hover:text-orange-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M19 15l-7-7-7 7" />
                       </svg>
@@ -259,7 +279,8 @@ export default function Header() {
                           className="block w-full px-4 py-2 text-sm text-left hover:text-orange-500 hover:cursor-pointer hover:bg-gray-100"
                           onClick={() => {
                             setShowMobileUserMenu(false);
-                            // Xử lý đổi mật khẩu ở đây
+                            setMenuOpen(false);           // Ẩn menu mobile
+                            setShowChangePassword(true);  // Mở popup đổi mật khẩu
                           }}
                         >
                           Đổi mật khẩu
