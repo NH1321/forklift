@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { callApi } from "../../api/api";
 import RegisterPopup from "./RegisterPopup";
+import ForgotPasswordPopup from "./ForgotPasswordPopup";
 
 export default function LoginPopup({ open, onClose, onLoginSuccess }) {
   const [email, setEmail] = useState("");
@@ -12,9 +13,10 @@ export default function LoginPopup({ open, onClose, onLoginSuccess }) {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
+  const [showForgot, setShowForgot] = useState(false);
   const router = useRouter();
 
-  if (!open && !showRegister) return null;
+  if (!open && !showRegister && !showForgot) return null;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -48,6 +50,17 @@ export default function LoginPopup({ open, onClose, onLoginSuccess }) {
           setShowRegister(false); // Đóng popup đăng ký
           setShowLogin(true);     // Mở lại popup đăng nhập (nếu bạn có state showLogin)
         }}
+      />
+    );
+  }
+
+  // Hiển thị ForgotPasswordPopup nếu showForgot = true
+  if (showForgot) {
+    return (
+      <ForgotPasswordPopup
+        open={showForgot}
+        onClose={() => { setShowForgot(false); onClose && onClose(); }}
+        onBackToLogin={() => setShowForgot(false)}
       />
     );
   }
@@ -98,7 +111,7 @@ export default function LoginPopup({ open, onClose, onLoginSuccess }) {
           </button>
         </form>
         <div className="flex flex-col items-center gap-2 mt-4">
-          <button className="text-sm text-orange-400 hover:text-orange-500 hover:cursor-pointer">Quên mật khẩu?</button>
+          <button className="text-sm text-orange-400 hover:text-orange-500 hover:cursor-pointer" onClick={() => setShowForgot(true)}>Quên mật khẩu?</button>
           <div className="flex items-center w-full my-2">
             <div className="flex-1 h-px bg-gray-200"></div>
             <span className="mx-2 text-xs text-gray-400">hoặc</span>

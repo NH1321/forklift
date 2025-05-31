@@ -10,6 +10,10 @@ router.post("/refresh-token", authController.refreshToken);
 router.post("/logout", authController.logout);
 router.post("/change-password", auth, authController.changePassword);
 
+// Forgot password & reset password
+router.post("/forgot-password", authController.forgotPassword);
+router.post("/reset-password", authController.resetPassword);
+
 router.get(
   "/google",
   passport.authenticate("google", { scope: ["profile", "email"] })
