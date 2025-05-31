@@ -63,6 +63,7 @@ export default function RegisterPopup({ open, onClose, onBackToLogin, onRegister
             value={fullName}
             onChange={e => setFullName(e.target.value)}
             required
+            autoFocus
           />
           <input
             type="email"
@@ -70,7 +71,6 @@ export default function RegisterPopup({ open, onClose, onBackToLogin, onRegister
             className="px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-orange-500"
             value={email}
             onChange={e => setEmail(e.target.value)}
-            autoFocus
             required
           />
           <input

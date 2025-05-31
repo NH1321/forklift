@@ -14,7 +14,7 @@ export default function FloatingContactButtons() {
       {/* Phone */}
       <a
         href="tel:0987013286"
-        className="flex items-center justify-center w-10 h-10 transition-transform bg-orange-500 rounded-full shadow-lg sm:w-12 sm:h-12 hover:scale-110"
+        className="flex items-center justify-center w-10 h-10 transition-transform bg-orange-500 rounded-full shadow-lg rotate-shake sm:w-12 sm:h-12 hover:scale-110"
         aria-label="Gọi Hotline"
         title="Điện thoại: 0987013286"
       >
@@ -39,7 +39,7 @@ export default function FloatingContactButtons() {
         href="https://zalo.me/0987013286"
         target="_blank"
         rel="noopener noreferrer"
-        className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-[#0084FF] rounded-full shadow-lg hover:scale-110 transition-transform"
+        className="flex items-center rotate-shake justify-center w-10 h-10 sm:w-12 sm:h-12 bg-[#0084FF] rounded-full shadow-lg hover:scale-110 transition-transform"
         aria-label="Chat Zalo"
         title="Zalo: 0987013286"
       >
@@ -56,7 +56,7 @@ export default function FloatingContactButtons() {
         href="https://www.facebook.com/hai.bui.7771"
         target="_blank"
         rel="noopener noreferrer"
-        className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-[#ff5af2] via-[#5a8cff] to-[#00eaff] rounded-full shadow-lg hover:scale-110 transition-transform"
+        className="flex items-center rotate-shake justify-center w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-[#ff5af2] via-[#5a8cff] to-[#00eaff] rounded-full shadow-lg hover:scale-110 transition-transform"
         aria-label="Chat Messenger"
         title="Messenger: Hoàng Hải Forklift XN"
       >
@@ -74,7 +74,7 @@ export default function FloatingContactButtons() {
       <button
         type="button"
         onClick={handleScrollTop}
-        className="flex items-center justify-center w-10 h-10 transition-transform bg-indigo-500 rounded-full shadow-lg sm:w-12 sm:h-12 hover:scale-110 hover:cursor-pointer"
+        className="flex items-center justify-center w-10 h-10 transition-transform bg-indigo-500 rounded-full shadow-lg rotate-shake sm:w-12 sm:h-12 hover:scale-110 hover:cursor-pointer"
         aria-label="Lên đầu trang"
         title="Lên đầu trang"
       >

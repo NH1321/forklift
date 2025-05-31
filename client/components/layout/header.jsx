@@ -6,6 +6,7 @@ import LoginPopup from '../ui/LoginPopup';
 import ChangePasswordPopup from '../ui/ChangePasswordPopup';
 import { callApi } from "../../api/api";
 import { fetchWithAuth } from "../../utils/fetchWithAuth";
+import { FaSearch } from "react-icons/fa";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -67,9 +68,15 @@ export default function Header() {
     <header className="relative z-50 w-full bg-white shadow-md px-4 sm:px-10 lg:px-[180px]">
       {/* Top Bar */}
       <div className="items-center justify-between hidden py-2 text-sm text-gray-600 sm:flex bg-gray-50">
-        <span className="flex items-center space-x-1">
+        <span className="flex items-center space-x-1 animate-blink">
           <span className="font-semibold text-black">Hotline:</span>
-          <span className="ml-1 font-semibold text-orange-500">0987 013 286</span>
+          <a className="ml-1 font-semibold text-orange-500"
+            href="tel:0987013286"
+            aria-label="Gọi Hotline"
+            title="Điện thoại: 0987013286"
+          >
+            0987 013 286
+          </a>
         </span>
         <span className="hidden text-sm text-purple-500 sm:inline">
           GIA BẢO FORKLIFT - Chuyên cung cấp xe nâng hàng chất lượng cao!
@@ -88,9 +95,13 @@ export default function Header() {
 
       {/* Mobile-only Hotline (top, right) */}
       <div className="flex items-center justify-end w-full pt-2 pb-1 sm:hidden">
-        <span className="text-xs font-semibold text-orange-500">
+        <a className="text-xs font-semibold text-orange-500 animate-blink"
+          href="tel:0987013286"
+          aria-label="Gọi Hotline"
+          title="Điện thoại: 0987013286"
+        >
           <span className="text-black">Hotline:</span> 0987 013 286
-        </span>
+        </a>
       </div>
 
       {/* Main Header */}
@@ -197,23 +208,32 @@ export default function Header() {
           </button>
           {/* Mobile Search Input (absolute, below icon) */}
           {showMobileSearch && (
-            <div className="absolute right-0 z-50 w-64 mt-2 top-full">
-              <form className="relative flex">
+            <div className="absolute right-0 z-50 flex items-center w-64 mt-2 top-full">
+              <form className="relative flex flex-1">
                 <input
                   autoFocus
                   type="text"
                   placeholder="Tìm kiếm..."
-                  className="flex-1 px-3 py-2 pr-8 text-sm border border-gray-300 rounded shadow"
+                  className="flex-1 px-3 py-2 pr-10 text-sm border border-gray-300 rounded shadow"
                 />
+                {/* Nút submit tìm kiếm */}
                 <button
-                  type="button"
-                  className="absolute text-lg text-gray-500 -translate-y-1/2 hover:cursor-pointer right-2 top-1/2 hover:text-red-500"
-                  aria-label="Đóng tìm kiếm"
-                  onClick={() => setShowMobileSearch(false)}
+                  type="submit"
+                  className="absolute text-lg text-gray-500 -translate-y-1/2 hover:cursor-pointer right-2 top-1/2 hover:text-orange-500"
+                  aria-label="Tìm kiếm"
                 >
-                  ×
+                  <FaSearch />
                 </button>
               </form>
+              {/* Nút đóng nằm ngoài cùng bên phải */}
+              <button
+                type="button"
+                className="ml-2 text-2xl text-gray-500 hover:cursor-pointer hover:text-red-500"
+                aria-label="Đóng tìm kiếm"
+                onClick={() => setShowMobileSearch(false)}
+              >
+                ×
+              </button>
             </div>
           )}
         </div>

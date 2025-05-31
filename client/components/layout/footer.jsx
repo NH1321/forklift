@@ -8,7 +8,9 @@ export default function Footer() {
       <div className="grid items-center grid-cols-1 gap-6 px-4 py-4 mx-auto border-t border-purple-500 max-w-7xl sm:grid-cols-2 md:grid-cols-4">
         {/* Logo và tên thương hiệu */}
         <div className="flex flex-col items-center space-y-1 text-center">
-          <h2 className="text-lg font-bold tracking-widest">
+          <h2 className="text-lg font-bold tracking-widest"
+            title="Quay về trang chủ"
+          >
             <a
               href="/"
               className="transition-colors hover:text-orange-500"
