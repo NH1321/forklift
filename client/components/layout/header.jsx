@@ -23,7 +23,12 @@ export default function Header() {
       try {
         const res = await fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/user/me`);
         const data = await res.json();
-        setUser(data);
+        if (!data || !data.FullName) {
+          setUser(null);
+          localStorage.removeItem("accessToken");
+        } else {
+          setUser(data);
+        }
       } catch (err) {
         setUser(null);
         localStorage.removeItem("accessToken");
