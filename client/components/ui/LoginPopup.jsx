@@ -28,7 +28,6 @@ export default function LoginPopup({ open, onClose, onLoginSuccess }) {
         body: { Email: email, Password: password },
       });
       localStorage.setItem('accessToken', data.accessToken);
-      localStorage.setItem('user', JSON.stringify(data.user));
       setLoading(false);
       onClose();
       if (onLoginSuccess) onLoginSuccess(data.user);

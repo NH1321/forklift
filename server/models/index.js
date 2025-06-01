@@ -30,5 +30,6 @@ db.ForkliftSpecification = require("./forkliftSpecification.model")(
   DataTypes
 );
 db.News = require("./news.model")(sequelize, DataTypes);
+db.Contact = require("./contact.model")(sequelize, DataTypes);
 
 module.exports = db;

@@ -5,7 +5,9 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const db = require("./models");
 const authRoutes = require("./routes/auth.route");
+const adminRoutes = require("./routes/admin.route");
 const userRoutes = require("./routes/user.route");
+const guessRoutes = require("./routes/guess.route");
 const passport = require("passport");
 require("./config/passport.config");
 
@@ -26,7 +28,9 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/auth", authRoutes);
+app.use("/api/guess", guessRoutes);
 app.use("/api/user", userRoutes);
+app.use("/api/admin", adminRoutes);
 
 const PORT = process.env.PORT || 4000;
 
