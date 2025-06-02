@@ -1,10 +1,11 @@
 'use client';
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { callApi } from "../../api/api";
 
-export default function ResetPasswordPage() {
+// Component con để chứa logic sử dụng useSearchParams
+function ResetPasswordForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
@@ -46,7 +47,7 @@ export default function ResetPasswordPage() {
           <div className="text-center text-green-600">
             Đặt lại mật khẩu thành công.<br />
             <button
-              className="block w-full py-2 mt-6 font-semibold text-white transition bg-orange-500 rounded hover:bg-orange-600"
+              className="block w-full py-2 mt-6 font-semibold text-white transition bg-orange-500 rounded hover:cursor-pointer hover:bg-orange-600"
               onClick={() => router.push("/")}
             >
               Đăng nhập ngay
@@ -86,5 +87,14 @@ export default function ResetPasswordPage() {
         )}
       </div>
     </div>
+  );
+}
+
+// Component cha bọc ResetPasswordForm bằng Suspense
+export default function ResetPasswordPage() {
+  return (
+    <Suspense fallback={<div>Đang tải trang...</div>}>
+      <ResetPasswordForm />
+    </Suspense>
   );
 }
