@@ -121,13 +121,13 @@ export default function Header() {
 
         {/* Desktop Menu */}
         <nav className="hidden space-x-6 text-sm font-medium sm:flex">
-          <a href="/" className="hover:text-orange-500">Trang chủ</a>
-          <a href="#" className="hover:text-orange-500">Giới thiệu</a>
-          <a href="#" className="hover:text-orange-500">Sản phẩm</a>
-          <a href="#" className="hover:text-orange-500">Phụ tùng</a>
-          <a href="#" className="hover:text-orange-500">Dịch vụ</a>
-          <a href="#" className="hover:text-orange-500">Tin tức</a>
-          <a href="#" className="hover:text-orange-500">Liên hệ</a>
+          <Link href="/" className="hover:text-orange-500">Trang chủ</Link>
+          <Link href="/gioi-thieu" className="hover:text-orange-500">Giới thiệu</Link>
+          <Link href="/san-pham" className="hover:text-orange-500">Sản phẩm</Link>
+          <Link href="/phu-tung" className="hover:text-orange-500">Phụ tùng</Link>
+          <Link href="/dich-vu" className="hover:text-orange-500">Dịch vụ</Link>
+          <Link href="/tin-tuc" className="hover:text-orange-500">Tin tức</Link>
+          <Link href="/lien-he" className="hover:text-orange-500">Liên hệ</Link>
         </nav>
 
         {/* Desktop Register Button */}
@@ -274,13 +274,13 @@ export default function Header() {
             </button>
 
             {/* Menu Items */}
-            <a href="/" className="block py-2 mt-4 text-base hover:text-orange-500" onClick={() => setMenuOpen(false)}>Trang chủ</a>
-            <a href="#" className="block py-2 text-base hover:text-orange-500" onClick={() => setMenuOpen(false)}>Giới thiệu</a>
-            <a href="#" className="block py-2 text-base hover:text-orange-500" onClick={() => setMenuOpen(false)}>Sản phẩm</a>
-            <a href="#" className="block py-2 text-base hover:text-orange-500" onClick={() => setMenuOpen(false)}>Phụ tùng</a>
-            <a href="#" className="block py-2 text-base hover:text-orange-500" onClick={() => setMenuOpen(false)}>Dịch vụ</a>
-            <a href="#" className="block py-2 text-base hover:text-orange-500" onClick={() => setMenuOpen(false)}>Tin tức</a>
-            <a href="#" className="block py-2 text-base hover:text-orange-500" onClick={() => setMenuOpen(false)}>Liên hệ</a>
+            <Link href="/" className="block py-2 mt-4 text-base hover:text-orange-500" onClick={() => setMenuOpen(false)}>Trang chủ</Link>
+            <Link href="/gioi-thieu" className="block py-2 text-base hover:text-orange-500" onClick={() => setMenuOpen(false)}>Giới thiệu</Link>
+            <Link href="/san-pham" className="block py-2 text-base hover:text-orange-500" onClick={() => setMenuOpen(false)}>Sản phẩm</Link>
+            <Link href="/phu-tung" className="block py-2 text-base hover:text-orange-500" onClick={() => setMenuOpen(false)}>Phụ tùng</Link>
+            <Link href="/dich-vu" className="block py-2 text-base hover:text-orange-500" onClick={() => setMenuOpen(false)}>Dịch vụ</Link>
+            <Link href="/tin-tuc" className="block py-2 text-base hover:text-orange-500" onClick={() => setMenuOpen(false)}>Tin tức</Link>
+            <Link href="/lien-he" className="block py-2 text-base hover:text-orange-500" onClick={() => setMenuOpen(false)}>Liên hệ</Link>
             {/* Đặt LoginPopup ở đây để không bị che */}
             <LoginPopup open={showLogin} onClose={() => setShowLogin(false)} onLoginSuccess={(user) => { setUser(user); setShowLogin(false); }} />
 
